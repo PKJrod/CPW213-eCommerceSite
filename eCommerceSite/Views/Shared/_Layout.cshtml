@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - eCommerceSite</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" /> <!--would have to replaced old files with new files after the installing the package-->
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
@@ -40,11 +40,12 @@
             &copy; 2021 - eCommerceSite - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery/jquery.min.js"></script>
     <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
 <!--In order to install a newer version of bootstrap right click lib -> add -> client side library -> type 'twitter bootstrap' -> can add all but add what is neccessary,
-    then delete previous version of the files which is located in the dist folder.-->
+    then delete previous version of the files which is located in the dist folder.
+    For jquery same as above but will add by typing jquery with latest version and delete dist folder in jquery folder.-->
