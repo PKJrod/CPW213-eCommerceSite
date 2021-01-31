@@ -3,24 +3,31 @@
     ViewData["Title"] = "Add Product";
 }
 
-<h1>Add Product</h1>
+<h1><span class="badge badge-pill badge-dark">Add Product</span></h1>
 
 <form method="post">
-    <label asp-for="Title"></label>
-    <input asp-for="Title" />
-    <span asp-validation-for="Title"></span>
-    <br />
+    <div class="form-group">
+        <label for="exampleTitle" asp-for="Title"></label>
+        <input class="form-control" id="exampleTitle" aria-describedby="productHelp" placeholder="Enter product" asp-for="Title" />
+        <small id="productHelp" class="form-text text-muted">Enter any product that comes to mind</small>
+        <span asp-validation-for="Title"></span>
+    </div>
+    <div class="form-group">
+        <label for="examplePrice" asp-for="price"></label>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">$</span>
+            </div>
+                <input class="form-control" id="examplePrice" placeholder="Enter Price" asp-for="price" />
+                <span asp-validation-for="price"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="exampleCategory" asp-for="Category"></label>
+        <input class="form-control" id="exampleCategory" placeholder="Enter Category" asp-for="Category" />
+        <span asp-validation-for="Category"></span>
+    </div>
 
-    <label asp-for="price"></label>
-    <input asp-for="price" />
-    <span asp-validation-for="price"></span>
-    <br />
-
-    <label asp-for="Category"></label>
-    <input asp-for="Category" />
-    <span asp-validation-for="Category"></span>
-    <br />
-
-    <input type="submit" />
+    <input class="btn btn-outline-primary" type="submit" />
 </form>
 
