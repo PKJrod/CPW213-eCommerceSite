@@ -29,7 +29,20 @@ namespace eCommerceSite
 
             services.AddDbContext<ProductContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            // Aleternative to lambda Expression syntax
+            // services.AddDbContext<ProductContext>(AddSqlServer);
         }
+        /*
+        /// <summary>
+        /// this is used if you don't want to use the lambda( => ) to configure the database.
+        /// </summary>
+        /// <param name="options"></param>
+        public void AddSqlServer(DbContextOptionsBuilder options)
+        {
+            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+        }
+        */
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
