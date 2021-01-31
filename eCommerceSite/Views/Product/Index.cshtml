@@ -1,0 +1,11 @@
+﻿@model IEnumerable<Product>
+@{ <!--this webpage will be displaying our products in the database. IEnumerable is a interface, using it is more flexiable because it is generic unlike using a list.-->
+    ViewData["Title"] = "ProductCatalog";
+}
+
+<h1>Product Catalog</h1>
+
+@foreach(Product p in Model)
+{
+    <p>@p.Title</p>
+}
