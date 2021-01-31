@@ -33,5 +33,40 @@ namespace eCommerceSite.Controllers
             // Send list of products to view to be displayed
             return View(products);
         }
+
+        /// <summary>
+        /// Gets the user input.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult Add()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// Add the user input and then stores it to the database, in order to add razor right click method name "Add" ->
+        /// Add View -> Razor View -> Create View.
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IActionResult Add(Product p)
+        {
+            if(ModelState.IsValid)
+            {
+                // Add to DB
+                _context.Products.Add(p);
+                _context.SaveChanges();
+
+                // viewdata and tempdata are almost the exact same thing, viewdata will last on the current request, tempdata will last over one redirect
+                TempData["Message"] = $"{p.ProductId}:{p.Title} was added successfully";
+                
+                // redirect back to catalog page
+                return RedirectToAction("Index");
+            }
+
+            return View();
+        }
     }
 }

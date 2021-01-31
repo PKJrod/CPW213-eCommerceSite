@@ -3,7 +3,13 @@
     ViewData["Title"] = "ProductCatalog";
 }
 
-<h1>Product Catalog</h1>
+<h1><span class="badge badge-pill badge-dark">Product Catalog</span></h1>
+
+<p class="text-success font-weight-bold">
+    @TempData["Message"]
+</p>
+
+<a class="btn btn-primary" asp-action="Add" asp-controller="Product">Add Product</a>
 
 <div class="table-responsive">
     <table class="table table-hover table-striped">
