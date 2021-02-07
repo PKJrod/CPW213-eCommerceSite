@@ -60,7 +60,7 @@ namespace eCommerceSite.Controllers
                 _context.SaveChanges();
 
                 // viewdata and tempdata are almost the exact same thing, viewdata will last on the current request, tempdata will last over one redirect
-                TempData["Message"] = $"{p.ProductId}:{p.Title} was added successfully";
+                TempData["Message"] = $"{p.Title} was added successfully";
                 
                 // redirect back to catalog page
                 return RedirectToAction("Index");

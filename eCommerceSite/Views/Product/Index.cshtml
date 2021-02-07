@@ -5,9 +5,16 @@
 
 <h1><span class="badge badge-pill badge-dark">Product Catalog</span></h1>
 
-<p class="text-success font-weight-bold">
-    @TempData["Message"]
-</p>
+<!--If data is not null or data was inputted then it will show the data that was added successfully-->
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Message"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
 
 <a class="btn btn-primary" asp-action="Add" asp-controller="Product">Add Product</a>
 
