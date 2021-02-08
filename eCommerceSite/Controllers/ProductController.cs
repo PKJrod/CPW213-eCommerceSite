@@ -114,5 +114,20 @@ namespace eCommerceSite.Controllers
 
             return View(p);
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id">parameter to the action has to match to action name to the route asp-route-id="p.product"</param>
+        /// <returns></returns>
+        public async Task<IActionResult> Delete(int id)
+        {
+            Product p =
+                await (from prod in _context.Products
+                 where prod.ProductId == id
+                 select prod).SingleAsync();
+
+            return View(p);
+        }
     }
 }
