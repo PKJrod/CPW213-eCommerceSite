@@ -23,14 +23,37 @@ namespace eCommerceSite.Controllers
         /// Displays a view that lists all products
         /// https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/async
         /// </summary>
+        /// <param name="id">int? is nullable<int> which we can pass in a id but if it doesn't have an id will result in null</param>
         /// <returns></returns> 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
+             // https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/null-coalescing-operator
+            int pageNum = id ?? 1;
+            const int PageSize = 3;
+            /* 
+             * same as above
+             *if(id == null)
+             *{
+             *   pageNum = 1;
+             *}
+             *else
+             *{
+             *   pageNum = id.Value;
+             *}
+             * same as above but a bit shorter
+             * https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/conditional-operator
+             * int pageNum = id.HasValue ? id.Value : 1;
+             */
+
             //Get all products from database
             // List<Product> products = _context.Products.ToList();
             List<Product> products =
                 await (from p in _context.Products
-                 select p).ToListAsync();
+                       orderby p.Title ascending
+                       select p)
+                       .Skip(PageSize * (pageNum - 1)) // Skip() must be before Take()
+                       .Take(PageSize)
+                       .ToListAsync();
 
             // Send list of products to view to be displayed
             return View(products);
