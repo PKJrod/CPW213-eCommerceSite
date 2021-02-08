@@ -114,5 +114,38 @@ namespace eCommerceSite.Controllers
 
             return View(p);
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id">parameter to the action has to match to action name to the route asp-route-id="p.product"</param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            Product p =
+                await (from prod in _context.Products
+                 where prod.ProductId == id
+                 select prod).SingleAsync();
+
+            return View(p);
+        }
+
+        [HttpPost]
+        [ActionName("Delete")] // this attribute is nicknaming the deleteConfirmed to Delete 
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            Product p =
+                await (from prod in _context.Products
+                         where prod.ProductId == id
+                         select prod).SingleAsync();
+
+            _context.Entry(p).State = EntityState.Deleted;
+            await _context.SaveChangesAsync();
+
+            TempData["Message"] = $"{p.Title} was deleted";
+
+            return RedirectToAction("Index");
+        }
     }
 }
