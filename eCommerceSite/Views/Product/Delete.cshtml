@@ -38,7 +38,12 @@
     </dl>
     
     <form asp-action="Delete">
+        @*if contained in url don't need this input
+         <input type="hidden" asp-for="ProductId" /> 
+        this input is used to get the productId in order to delete since all the data is outside the form.
+        should pass it to the controller and let us delete from db. to do this originally will do value="@Model.ProductId" name="ProductId"
+        The Parameter in deleteConfirmation has to be the same in order to delete the product from the database.*@
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="Index">Back to List</a>
     </form>
-</div>
+        </div>
