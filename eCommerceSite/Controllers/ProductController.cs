@@ -47,21 +47,14 @@ namespace eCommerceSite.Controllers
              * int pageNum = id.HasValue ? id.Value : 1;
              */
 
-            int numProducts = await (from p in _context.Products
-                              select p).CountAsync();
+            int numProducts = await ProductDb.GetTotalProductsAsync(_context);
             int totalPages = (int)Math.Ceiling((double)numProducts / PageSize);
 
             ViewData["MaxPage"] = totalPages;
 
             //Get all products from database
             // List<Product> products = _context.Products.ToList();
-            List < Product > products =
-                await (from p in _context.Products
-                       orderby p.Title ascending
-                       select p)
-                       .Skip(PageSize * (pageNum - 1)) // Skip() must be before Take()
-                       .Take(PageSize)
-                       .ToListAsync();
+            List<Product> products = await ProductDb.GetProductsAsync(_context, PageSize, pageNum);
 
             // Send list of products to view to be displayed
             return View(products);
@@ -90,9 +83,7 @@ namespace eCommerceSite.Controllers
         {
             if(ModelState.IsValid)
             {
-                // Add to DB
-                _context.Products.Add(p);
-                await _context.SaveChangesAsync();
+                await ProductDb.AddProductAsync(_context, p);
 
                 // viewdata and tempdata are almost the exact same thing, viewdata will last on the current request, tempdata will last over one redirect
                 TempData["Message"] = $"{p.Title} was added successfully";
