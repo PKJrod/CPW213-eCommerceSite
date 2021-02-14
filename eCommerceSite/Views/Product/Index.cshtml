@@ -45,3 +45,38 @@
         </tbody>
     </table>
 </div>
+@* Print page numbers *@
+<ul class="pagination">
+    @for (int i = 1; i <= (int)ViewData["MaxPage"]; i++)
+    {
+        @*
+        string classes = "page-item";
+        if (i == (int)ViewData["CurrentPage"])
+        {
+            classes += " active";
+        }
+        <li class="page-item active">
+            <a class="page-link" asp-action="Index" asp-route-id="@i">
+                @i
+            </a>
+        </li>
+        same as below but shorter & less redundent.
+        *@
+        if (i == (int)ViewData["CurrentPage"])
+        {
+            <li class="page-item active">
+                <a class="page-link" asp-action="Index" asp-route-id="@i">
+                    @i
+                </a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item">
+                <a class="page-link" asp-action="Index" asp-route-id="@i">
+                    @i
+                </a>
+            </li>
+        }
+    }
+</ul>
