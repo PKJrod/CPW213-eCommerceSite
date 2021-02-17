@@ -1,4 +1,12 @@
-﻿<!DOCTYPE html>
+﻿
+@* creating a way to tell the user that they are logged in *@
+@*       Interface V, used for flexibility, can swap out components without breaking anything*@
+@inject IHttpContextAccessor sessionData
+@{
+    int? userId = sessionData.HttpContext.Session.GetInt32("UserId");
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -25,19 +33,28 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark"asp-controller="Product"
+                            <a class="nav-link text-dark" asp-controller="Product"
                                asp-action="Index">Catalog</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="User" asp-action="Register">
-                                Register
-                            </a> 
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="User" asp-action="Login">
-                                Log In
-                            </a>
-                        </li>
+                        @if (userId == null) // if user not logged in, not going to show the links
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="User" asp-action="Register">
+                                    Register
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="User" asp-action="Login">
+                                    Log In
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark disabled">>Welcome back </a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
