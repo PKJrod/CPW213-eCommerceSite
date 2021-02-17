@@ -1,6 +1,7 @@
 using eCommerceSite.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -32,6 +33,21 @@ namespace eCommerceSite
 
             // Aleternative to lambda Expression syntax
             // services.AddDbContext<ProductContext>(AddSqlServer);
+
+            services.AddDistributedMemoryCache();
+
+            // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/app-state?view=aspnetcore-3.1
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.IsEssential = true;
+            });
+
+            // have to add this in order to inject httpcontextaccessor to _layout so it won't crash
+            services.AddHttpContextAccessor();
+
+            // same as above, can dynamically switch between classes because of the interface. I.E like switching from paypal to adyen.
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
         /*
         /// <summary>
@@ -63,6 +79,9 @@ namespace eCommerceSite
             app.UseRouting();
 
             app.UseAuthorization();
+
+            // Must be between UseRouting() and UseEndPoints()
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

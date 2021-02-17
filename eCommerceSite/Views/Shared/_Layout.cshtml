@@ -1,4 +1,30 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.EntityFrameworkCore
+@* creating a way to tell the user that they are logged in *@
+@*       Interface V, used for flexibility, can swap out components without breaking anything*@
+@inject IHttpContextAccessor sessionData
+@inject eCommerceSite.Data.ProductContext db 
+@{
+    int? userId = sessionData.HttpContext.Session.GetInt32("UserId");
+    string username = null;
+    if( userId.HasValue )
+    {   
+        // can increase performance when multiple users are logging in, database, one less database call per user per request
+        string userNameFromSession = sessionData.HttpContext.Session.GetString("Usernam");
+        if ( userNameFromSession == null )
+        {
+            username = await (from u in db.UserAccounts
+                              where u.UserId == userId
+                              select u.Username).SingleOrDefaultAsync();
+            sessionData.HttpContext.Session.SetString("Username", username);
+        }
+        else
+        {
+            username = userNameFromSession;
+        }
+    }
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -25,14 +51,28 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark"asp-controller="Product"
+                            <a class="nav-link text-dark" asp-controller="Product"
                                asp-action="Index">Catalog</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="User" asp-action="Register">
-                                Register
-                            </a> 
-                        </li>
+                        @if (userId == null) // if user not logged in, not going to show the links
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="User" asp-action="Register">
+                                    Register
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="User" asp-action="Login">
+                                    Log In
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark disabled">Welcome back @username! </a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

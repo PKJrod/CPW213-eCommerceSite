@@ -20,6 +20,9 @@ namespace eCommerceSite.Models
         public DateTime? DateOfBirth { get; set; }
     }
 
+    /// <summary>
+    /// A view model a model built for a view, can still use model binding without having to worry about security vulnerabilities as much.
+    /// </summary>
     public class RegisterViewModel
     {
         [Required]
@@ -49,5 +52,16 @@ namespace eCommerceSite.Models
 
         [DataType(DataType.Date)] // Time is ignored
         public DateTime? DateOfBirth { get; set; }
+    }
+
+    public class LoginViewModel
+    {
+        [Required]
+        [Display(Name = "Username or Email")]
+        public string UsernameOfEmail { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        public string password { get; set; }
     }
 }
