@@ -30,6 +30,15 @@ namespace eCommerceSite
             services.AddDbContext<ProductContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddDistributedMemoryCache();
+
+            // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/app-state?view=aspnetcore-3.1
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.IsEssential = true;
+            });
+
             // Aleternative to lambda Expression syntax
             // services.AddDbContext<ProductContext>(AddSqlServer);
         }
@@ -63,6 +72,8 @@ namespace eCommerceSite
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {
