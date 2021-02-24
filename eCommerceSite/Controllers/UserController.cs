@@ -68,6 +68,8 @@ namespace eCommerceSite.Controllers
                 _context.UserAccounts.Add(acc);
                 await _context.SaveChangesAsync();
 
+                LogUserIn(acc.UserId);
+
                 // redirect to home page
                 return RedirectToAction("Index", "Home");
             }
@@ -95,17 +97,17 @@ namespace eCommerceSite.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
             UserAccount account =
                await (from u in _context.UserAccounts
-                where (u.Username == model.UsernameOfEmail
-                    || u.Email == model.UsernameOfEmail)
-                    && u.Password == model.password
-                select u).SingleOrDefaultAsync();
+                      where (u.Username == model.UsernameOfEmail
+                          || u.Email == model.UsernameOfEmail)
+                          && u.Password == model.password
+                      select u).SingleOrDefaultAsync();
             /* * method syntax below query syntax above. sometimes can only use method syntax to access database
              * UserAccount account = 
              *      await _context.UserAccounts
@@ -115,7 +117,7 @@ namespace eCommerceSite.Controllers
              *              .SingleOrDefaultAsync();
              * 
              * */
-            if(account ==  null)
+            if (account == null)
             {
                 // Credentials did not match
 
@@ -125,9 +127,14 @@ namespace eCommerceSite.Controllers
             }
 
             // Log user, into website // Key V, can be whatever you want as long as it is memoriable.
-            HttpContext.Session.SetInt32("UserId", account.UserId);
+            LogUserIn(account.UserId);
 
             return RedirectToAction("Index", "Home");
+        }
+
+        private void LogUserIn(int accountId)
+        {
+            HttpContext.Session.SetInt32("UserId", accountId);
         }
 
         public IActionResult Logout()
