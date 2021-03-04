@@ -9,7 +9,7 @@
     if( userId.HasValue )
     {   
         // can increase performance when multiple users are logging in, database, one less database call per user per request
-        string userNameFromSession = sessionData.HttpContext.Session.GetString("Usernam");
+        string userNameFromSession = sessionData.HttpContext.Session.GetString("Username");
         if ( userNameFromSession == null )
         {
             username = await (from u in db.UserAccounts
