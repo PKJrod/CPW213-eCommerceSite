@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<Product>
+@inject IHttpContextAccessor http
 @{ <!--this webpage will be displaying our products in the database. IEnumerable is a interface, using it is more flexiable because it is generic unlike using a list.-->
     ViewData["Title"] = "ProductCatalog";
 }
@@ -30,6 +31,11 @@
             </tr>
         </thead>
         <tbody>
+            @{ 
+                // mywebsite.com/Product/Index/5
+                string prevUrl = http.HttpContext.Request.Path;
+            }
+
             @foreach(Product p in Model)
             {
                 <tr>
@@ -39,7 +45,11 @@
                     <td>
                         <a class="btn btn-secondary" asp-route-id="@p.ProductId" asp-action="Edit">Edit</a>
                         <a class="btn btn-danger" asp-route-id="@p.ProductId" asp-action="Delete">Delete</a>
-                        <a class="btn btn-Primary" asp-route-id="@p.ProductId"asp-controller="Cart" asp-action="Add">Add to cart</a>
+                        <a class="btn btn-Primary" 
+                           asp-route-id="@p.ProductId" 
+                           asp-route-prevUrl="@prevUrl"
+                           asp-controller="Cart"
+                           asp-action="Add">Add to cart</a>
                     </td>
                 </tr>
             }
