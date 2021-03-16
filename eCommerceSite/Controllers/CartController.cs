@@ -32,8 +32,26 @@ namespace eCommerceSite.Controllers
             // Get product from the database
             Product p = await ProductDb.GetProductAsync(_context, id);
 
-            // Add product to cart cookie
-            string data = JsonConvert.SerializeObject(p);
+            const string CartCookie = "CartCookie";
+
+            // Get existing cart items. https://www.c-sharpcorner.com/article/asp-net-core-working-with-cookie/
+            string existingItems = _httpContext.HttpContext.Request.Cookies[CartCookie];
+
+            List<Product> cartProducts = new List<Product>();
+
+            // looking to see if the cart has something attached to it
+            if(existingItems != null )
+            {   
+                // will deserialize the object and puts it in a list to have a cart working
+                cartProducts = JsonConvert.DeserializeObject<List<Product>>(existingItems);
+            }
+
+            // Add current product to existing cart
+            cartProducts.Add(p);
+            
+            // Add product list to cart cookie
+            string data = JsonConvert.SerializeObject(cartProducts);
+
             CookieOptions options = new CookieOptions()
             {
                 // cookie will last as long as you set it however users can always delete them.
@@ -42,7 +60,7 @@ namespace eCommerceSite.Controllers
                 IsEssential = true
             };
 
-            _httpContext.HttpContext.Response.Cookies.Append("CartCookie", data, options);
+            _httpContext.HttpContext.Response.Cookies.Append(CartCookie, data, options);
 
             // Redirect back to previous page
             return RedirectToAction("Index", "Product");
